@@ -56,7 +56,15 @@ async function createBook(bookData) {
 
   await db.query(createOneSQL, [bookData.title, bookData.type, bookData.author, bookData.topic, new Date(bookData.publicationDate)])
     .then(result => createResult = result.rows[0])
-    .catch(error => createResult = error);
+    .catch(error => {
+      createResult = {
+        error: {
+          message: "DB error, could not create book: " + error.message,
+          bookToCreate: bookData,
+          code: error.code
+        }
+      }
+    });
 
   return createResult;
 }
@@ -68,7 +76,14 @@ async function getAllBooks() {
 
   await db.query(SQL)
     .then(result => getResult = result.rows)
-    .catch(error => getResult = error);
+    .catch(error => {
+      getResult = {
+        error: {
+          message: "DB error, could not fetch all books: " + error.message,
+          code: error.code
+        }
+      }
+    });
 
   return getResult;
 }
