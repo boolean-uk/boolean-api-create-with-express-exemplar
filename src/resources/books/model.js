@@ -61,4 +61,16 @@ async function createBook(bookData) {
   return createResult;
 }
 
-module.exports =  {Book, createBook};
+async function getAllBooks() {
+  const SQL = `SELECT * FROM books;`;
+
+  let getResult = {}
+
+  await db.query(SQL)
+    .then(result => getResult = result.rows)
+    .catch(error => getResult = error);
+
+  return getResult;
+}
+
+module.exports =  {Book, createBook, getAllBooks};

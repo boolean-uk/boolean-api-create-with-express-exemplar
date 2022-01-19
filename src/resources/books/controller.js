@@ -1,5 +1,5 @@
 const db = require("./../../utils/database");
-const {createBook} = require("./model");
+const BookModel = require("./model");
 
 async function createOne(req, res) {
   const bookToCreate = {
@@ -7,19 +7,16 @@ async function createOne(req, res) {
   }
 
   console.log("Attempting to create book:", bookToCreate)
-  let result = await createBook(bookToCreate)
+  let result = await BookModel.createBook(bookToCreate)
   console.log("Book creation response:", result)
   res.json({data: result})
 }
 
-function getAll(req, res) {
-
-  const SQL = `SELECT * FROM books;`
-
-  db.query(SQL)
-  .then(result => res.json({data: result.rows}))
-  .catch(error => res.json({error: error}));
+async function getAll(req, res) {
+  console.log("Attempting to get all books")
+  let result = await BookModel.getAllBooks()
+  console.log("Fetching books response:", result)
+  res.json({data: result})
 }
-
 
 module.exports = {createOne, getAll}
