@@ -3,10 +3,11 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 
 const db = require("./utils/database");
-const Book = require("./resources/books/model");
+const {Book} = require("./resources/books/model");
 const Pet = require("./resources/pets/model");
 
 /* IMPORT ROUTERS */
+const bookRouter = require("./resources/books/router");
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(bodyParser.json());
 /* SETUP ROUTES */
 
 /* CATCH-ALL TO TEST ROUTES */
+
+app.use('/books', bookRouter);
 
 app.get("*", (req, res) => {
   res.json({ ok: true });

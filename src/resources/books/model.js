@@ -44,4 +44,21 @@ function Book() {
   });
 }
 
-module.exports = Book;
+async function createBook(bookData) {
+  const createOneSQL = `
+    INSERT INTO books 
+      (title, type, author, topic, publicationDate) 
+    VALUES 
+      ($1,$2,$3,$4,$5) 
+    RETURNING *;`;
+
+  let createResult = {}
+
+  await db.query(createOneSQL, [bookData.title, bookData.type, bookData.author, bookData.topic, new Date(bookData.publicationDate)])
+    .then(result => createResult = result.rows[0])
+    .catch(error => createResult = error);
+
+  return createResult;
+}
+
+module.exports =  {Book, createBook};
