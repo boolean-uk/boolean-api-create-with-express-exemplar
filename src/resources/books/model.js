@@ -54,6 +54,13 @@ async function createBook(bookData) {
 
   let createResult = {}
 
+  /*
+    INSERT INTO books 
+      (title, type, author, topic, publicationDate) 
+    VALUES 
+      ("some title","Fiction","Name Lastname", "fantasy", "2022...") 
+  */
+
   await db.query(createOneSQL, [bookData.title, bookData.type, bookData.author, bookData.topic, new Date(bookData.publicationDate)])
     .then(result => createResult = result.rows[0])
     .catch(error => {
